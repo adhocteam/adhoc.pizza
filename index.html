@@ -3,17 +3,110 @@
 <title>adhoc.🍕</title>
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
 <style>
- body { background: url(adhoc-pizza-white.png) }
- div { display: flex; align-items: center; justify-content: center }
- img {
-     animation: pizzadance 0.5s ease-in-out infinite alternate;
- }
- @keyframes pizzadance {
-     0% { transform: scale(.9) }
-     100% { transform: scale(1.1) }
- }
- a { color: white; font-family: monospace; font-size: smaller }
- a:visited { color: white }
+    body {
+        background: url(adhoc-pizza-white.png);
+        margin: 0;
+        height: 100vh;
+        perspective: 25em;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+
+    img {
+        animation: pizzadance 0.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes pizzadance {
+        0% {
+            transform: scale(.9)
+        }
+        100% {
+            transform: scale(1.1)
+        }
+    }
+
+    a {
+        color: white;
+        font-family: monospace;
+        font-size: smaller
+    }
+
+    a:visited {
+        color: white
+    }
+
+    [class*='cube'] {
+        position: absolute;
+    }
+
+    .cube {
+        top: 50%;
+        left: 50%;
+        transform-style: preserve-3d;
+        font: 4.4vmin/ 5em Impact;
+        text-align: center;
+        animation: ani 8s ease-in-out infinite;
+    }
+
+    .cube__face {
+        background: url(http://adhoc.pizza/adhoc-pizza-green.png);
+        margin: -2.5em;
+        width: 5em;
+        height: 5em;
+        box-shadow: inset 0 0 0 2px;
+        transform: rotate3d(var(--i, 0), var(--j, 1), 0, var(--a, 0deg)) translateZ(2.5em);
+    }
+
+    .cube__face:nth-child(n + 5) {
+        --i: 1;
+        --j: 0;
+    }
+
+    .cube__face:nth-child(2) {
+        --a: 90deg;
+    }
+
+    .cube__face:nth-child(3) {
+        --a: 180deg;
+    }
+
+    .cube__face:nth-child(4) {
+        --a: 270deg;
+    }
+
+    .cube__face:nth-child(5) {
+        --a: 90deg;
+    }
+
+    .cube__face:nth-child(6) {
+        --a: -90deg;
+    }
+
+    @keyframes ani {
+        to {
+            transform: rotateY(1turn) rotateX(1turn);
+        }
+    }
+    
 </style>
 <div><img src=adhoc-pizza-green.png></div>
 <a href="https://adhocteam.us/">ad hoc</a>
+
+
+<div class="cube">
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+    <div class="cube__face">adhoc.pizza</div>
+</div>
