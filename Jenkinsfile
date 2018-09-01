@@ -7,7 +7,7 @@ pipeline {
     stage("Deploy") {
         when { branch 'master' }
         steps {
-            sh 'aws s3 cp --exclude Jenkinsfile s3://adhoc.pizza .'
+            sh 'aws s3 sync . s3://adhoc.pizza --exclude Jenkinsfile'
         }
     }
   }
