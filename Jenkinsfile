@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'meatpillow'
+    label 'website'
   }
 
   stages {
