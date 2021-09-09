@@ -1,7 +1,7 @@
 on:
   push:
-    # branches:
-    #   - master
+    branches:
+      - master
 name: Deploy webapp to production
 env:
   URL: http://adhoc.pizza.s3-website-us-east-1.amazonaws.com/
