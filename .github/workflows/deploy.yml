@@ -1,0 +1,48 @@
+on:
+  push:
+    branches:
+      - master
+name: Deploy webapp to production
+env:
+  URL: http://adhoc.pizza.s3-website-us-east-1.amazonaws.com/
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Post a deployment start event
+        uses: bobheadxi/deployments@v0.6.0
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: production
+          ref: ${{ github.head_ref }}
+      
+      - name: Deploy site to S3
+        run: aws s3 sync . s3://adhoc.pizza --exclude ".git/*" --delete --acl public-read
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-east-1"
+
+      - name: Post successful deployment
+        uses: bobheadxi/deployments@v0.6.0
+        if: ${{ success() }}
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env_url: ${{ env.URL }}
+
+      # If the deployment failed
+      - uses: bobheadxi/deployments@v0.6.0
+        if: ${{ failure() }}
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
