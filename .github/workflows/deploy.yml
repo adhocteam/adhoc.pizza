@@ -8,6 +8,10 @@ env:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      deployments: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -20,12 +24,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           env: production
           ref: ${{ github.head_ref }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ACCESS_ASSUME_ROLE }}
+          aws-region: us-east-1
       
       - name: Deploy site to S3
         run: aws s3 sync . s3://adhoc.pizza --exclude ".git/*" --delete --acl public-read
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: "us-east-1"
 
       - name: Post successful deployment
